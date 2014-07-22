@@ -1,0 +1,124 @@
+#############################################################
+## JOB DESCRIPTION                                         ##
+#############################################################
+
+# Minimization and Equilibration Phase1 of 
+# LeuT in lipid bilayer
+# NpT freeze all atoms except for the lipids tails and water
+
+set inputdir ../phase1
+set outputdir .
+set common ../common
+
+#############################################################
+## ADJUSTABLE PARAMETERS                                   ##
+#############################################################
+
+set temperature    310
+set inputname      $inputdir/dat_phase1
+set outputname     dat_phase1b
+
+structure          $common/ionized.psf
+coordinates        $inputname.coor
+bincoordinates     $inputname.restart.coor
+binvelocities      $inputname.restart.vel
+extendedSystem     $inputname.restart.xsc
+firsttimestep      0
+
+#############################################################
+## SIMULATION PARAMETERS                                   ##
+#############################################################
+
+# Input
+paraTypeCharmm	    on
+parameters          $common/parameters_all.prm
+
+# Fixed Atoms Constraint (set PDB beta-column to 1)
+fixedAtoms          on
+fixedAtomsFile      $outputdir/rho_equil_phase1b_fix.pdb
+fixedAtomsCol       B
+
+# Harmonic constraint
+# -------------------
+constraints     on     # (off)
+consref  		$inputname.coor
+consexp 		2
+conskfile 		$outputdir/rho_equil_phase1b_restrain.pdb
+conskcol 		B
+selectConstraints       on
+selectConstrZ           on
+
+# Force-Field Parameters
+exclude             scaled1-4
+1-4scaling          1.0
+cutoff              12.
+switching           on
+switchdist          10.
+pairlistdist        13.5
+margin              1.5
+seed                815234958
+# Integrator Parameters
+timestep            1.0  ;# 1fs/step
+rigidBonds          all  ;# needed for 2fs steps
+rigidTolerance      0.00000001
+nonbondedFreq       1
+fullElectFrequency  2  
+stepspercycle       10
+
+# Constant Temperature Control
+langevin            on    ;# do langevin dynamics
+langevinDamping     5     ;# damping coefficient (gamma) of 5/ps
+langevinTemp        $temperature
+langevinHydrogen    off    ;# don't couple langevin bath to hydrogens
+
+LangevinPiston       on
+LangevinPistonTarget 1.01325
+LangevinPistonPeriod 200
+LangevinPistonDecay  50
+LangevinPistonTemp   $temperature
+
+# Periodic Boundary Conditions
+wrapAll            on
+
+# PME (for full-system periodic electrostatics)
+PME                 yes
+PMEGridSpacing      1.0
+
+
+# Constant Pressure Control (variable volume)
+useGroupPressure      yes ;# needed for rigidBonds
+useFlexibleCell       yes
+useConstantratio       yes
+
+# Output
+outputName          $outputdir/$outputname
+
+restartfreq         2000    ;# 500steps = every 0.5ps
+dcdfreq             2000
+xstFreq             2000
+outputEnergies      2000
+outputPressure      2000
+
+binaryoutput       no   
+binaryrestart      yes
+outputTiming       2000
+
+#############################################################
+## EXTRA PARAMETERS                                        ##
+#############################################################
+
+set waterCheckFreq              100
+set lipidCheckFreq              100
+set allatompdb                  $inputname.coor
+tclForces                       on 
+tclForcesScript                 $common/equil_phase1b_keep_water_out.tcl
+
+#############################################################
+## EXECUTION SCRIPT                                        ##
+#############################################################
+
+# Minimization
+minimize           5000
+reinitvels          $temperature
+
+run 500000 ;# 250ps

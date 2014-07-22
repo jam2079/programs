@@ -1,0 +1,127 @@
+############################################################
+## JOB DESCRIPTION                                         ##
+#############################################################
+
+# Minimization and Equilibration Phase2a of 
+# 5ht in lipid bilayer
+# NPT constrain the protein backbone while free all other atoms
+
+set inputdir  ../phase2a
+set outputdir .
+set common    ../common
+
+#############################################################
+## ADJUSTABLE PARAMETERS                                   ##
+#############################################################
+
+set temperature    310
+set inputname      $inputdir/dat_equil_phase2a1.np 		
+set outputname     dat_equil_phase2a1
+
+structure          $common/ionized.psf
+coordinates        $inputname.coor
+bincoordinates     $inputname.restart.coor
+binvelocities      $inputname.restart.vel
+extendedSystem     $inputname.restart.xsc
+firsttimestep      0
+
+
+#############################################################
+## SIMULATION PARAMETERS                                   ##
+#############################################################
+
+# Input
+paraTypeCharmm	    on
+parameters          $common/parameters_all.prm
+
+#temperature         $temperature
+
+# Harmonic constraint
+# -------------------
+constraints     on     # (off)
+consref  	        ../phase1c/dat_phase1c.coor
+consexp 		2
+conskfile 		$common/rho_restrain_1.pdb
+conskcol 		B
+
+
+# Force-Field Parameters
+exclude             scaled1-4
+1-4scaling          1.0
+cutoff              12.
+switching           on
+switchdist          10.
+pairlistdist        13.5
+margin              2.5
+
+# Integrator Parameters
+timestep            1.0  ;# 1fs/step
+rigidBonds          all  ;# needed for 2fs steps
+rigidTolerance      0.00000001
+nonbondedFreq       2
+fullElectFrequency  4  
+stepspercycle       20
+
+
+# Constant Temperature Control
+langevin            on    ;# do langevin dynamics
+langevinDamping     5     ;# damping coefficient (gamma)
+langevinTemp        $temperature
+langevinHydrogen    off    ;# don't couple langevin bath to hydrogens
+
+LangevinPiston       on
+LangevinPistonTarget 1.01325
+LangevinPistonPeriod 200
+LangevinPistonDecay  50
+LangevinPistonTemp   $temperature
+
+wrapAll             on
+
+# PME (for full-system periodic electrostatics)
+PME                 yes
+PMEGridSpacing      1.0
+
+
+# Constant Pressure Control (variable volume)
+useGroupPressure      yes ;# needed for rigidBonds
+useFlexibleCell       yes
+#useConstantRatio      yes
+useConstantRatio      yes
+
+# Output
+outputName          $outputdir/$outputname
+
+restartfreq        5000     ;# 500steps = every 0.5ps
+dcdfreq            5000
+xstFreq            5000
+outputEnergies     5000
+outputPressure     5000
+
+binaryoutput       no   
+binaryrestart      yes
+outputTiming       5000
+
+
+#############################################################
+## EXTRA PARAMETERS                                        ##
+#############################################################
+
+if {1} {
+	set waterCheckFreq              100
+	set lipidCheckFreq              100
+	set allatompdb                  ../phase1c/dat_phase1c.coor
+	tclForces                       on
+	tclForcesScript                 $common/equil_phase2a_keep_water_out.tcl
+}
+
+#############################################################
+## EXECUTION SCRIPT                                        ##
+#############################################################
+
+if {0} {
+	# Minimization
+	minimize            2500
+	reinitvels          $temperature
+}
+
+run 50000

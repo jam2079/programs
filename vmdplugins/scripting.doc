@@ -1,0 +1,228 @@
+
+Selection:
+The selection box is a bit tricky to modify from a script. First delete all its contents, the add to it. For example:
+$::rmsdtt::w.top.left.sel delete 1.0 end
+$::rmsdtt::w.top.left.sel insert end "residue 1 to 5"
+
+To use the selection modifiers, set one of these to 1, and the other two to 0:
+::rmsdtt::bb_only     backbone selection modifier
+::rmsdtt::trace_only  trace selection modifier
+::rmsdtt::noh         no hydrogens selection modifier
+
+Reference molecule:
+::rmsdtt::rmsd_base ref   reference molecule (ref=top, ave, selected)
+
+Other ptions:
+::rmsdtt::traj_sw      trajectory switch
+::rmsdtt::traj_ref     trajectory frame reference
+::rmsdtt::traj_all     trajectory all switch
+
+::rmsdtt::skip_sw      skip switch
+::rmsdtt::skip_start   start at this step
+::rmsdtt::skip_steps   skip every this steps
+::rmsdtt::skip_end
+
+::rmsdtt::time_sw     time switch (instead of steps)
+::rmsdtt::time_ini    initial time
+::rmsdtt::time_step   time step
+
+::rmsdtt::plot_sw      plot switch
+::rmsdtt::plot_program program to use for plotting (multiplot, xmgrace, excel)
+
+::rmsdtt::save_sw      save switch
+::rmsdtt::save_file    filename for saving results
+
+Some options are not compatible. The gui is able to identify this, but not the command line. You can for a gui update with the command ::rmsdtt::ctrlgui. 
+
+Molecule list:
+::rmsdtt::mol_del [selected]   Delete molecules in list. If selected != 0, delete only selected molecules.
+::rmsdtt::mol_add [active]     Add molecules to list. If active != 0, add only active molecules. Note that all molecules are deleted previous to adding them.
+
+Rmsd and Align:
+::rmsdtt::doRmsd 
+::rmsdtt::doAlign
+
+Results:
+Total results are stored in the ::rmsdtt::datatot array. For example, to get the value for the total average use
+puts $::rmsdtt::datatot(avg)
+Similar expressions can be use for columns sd, min, max and num.
+Data for individual molecules is stored in ::rmsdtt::datalist listbox. To get a column use, ie. avg:
+$::rmsdtt::datatot(avg) get 0 end
+
+Saving to file:
+::rmsdtt::SaveDataBrowse [type]    Opens a selection file widget. If type is 'data' the rmsd data is saved, otherwise the summary data is saved.
+::rmsdtt::saveData filename        Saves rmsd data to file.
+::rmsdtt::saveSummary filename     Saves rmsd data to file.
+
+Plotting:
+::rmsdtt::doPlot                   Plots the rmsd data.
+
+
+
+
+
+
+::rmsdtt::w
+
+::rmsdtt::swap_sw
+::rmsdtt::swap_print
+::rmsdtt::swap_type
+::rmsdtt::swap_use
+
+::rmsdtt::colorize
+::rmsdtt::datalist
+::rmsdtt::datatot
+::rmsdtt::stats
+
+
+
+
+
+
+::rmsdtt::byres_cluster
+::rmsdtt::byres_cluster_fit
+::rmsdtt::byres_cluster_only
+::rmsdtt::byres_cluster_weights_from
+::rmsdtt::byres_conv ::rmsdtt::byres_convsw
+::rmsdtt::byres_factor
+::rmsdtt::byres_file
+::rmsdtt::byres_frames_all
+::rmsdtt::byres_niter
+::rmsdtt::byres_plot
+::rmsdtt::byres_replace
+::rmsdtt::byres_repre
+::rmsdtt::byres_save
+::rmsdtt::byres_scale
+::rmsdtt::byres_sel2
+::rmsdtt::byres_style
+::rmsdtt::byres_type
+::rmsdtt::byres_update
+::rmsdtt::equiv_byres
+::rmsdtt::equiv_sw
+::rmsdtt::use_byres
+::rmsdtt::weighted_field
+::rmsdtt::weighted_mol
+::rmsdtt::weighted_sw
+
+
+
+
+
+
+
+
+
+First you have to open the plugin to initialize all
+> the variables. Then you select some the main options, like the selection, plot, save to
+> file,... And finally you compute the rmsd. The trick is to correctly
+> activate/deactivate the molecules, set the reference molecule (top), and
+> use "::RMSDTT::onlyactive" to make the changes. Remember to use
+> "::RMSDTT::onlyactive" after each change in the molecule list
+> (activate/deactivate, loading new mols, deleting mols).
+>
+> The selection goes directly in the :RMSDTT::compute_rms command. It
+> won't use the command buttons for 'backbone' or 'trace'. This is the
+> command:
+> ::RMSDTT::compute_rms {base sel_text frame_ref}
+>      base is 'top', 'ave' or 'selected', but better go with 'top'
+>      sel_text is your selection
+>      frame_ref, well, the frame reference
+>
+> Here is an example in which I loop through some trajectories, loading
+> them, and computing the rmsd one by one.
+>
+> ---------------------------
+> rmsdtt
+> set ::RMSDTT::file_out_sw 1
+> set ::RMSDTT::plot_sw 0
+>
+> set mols [list mol1 mol2 mol3 mol4 mol5 mol6 mol7 mol8]
+>
+> set n [molinfo num]
+> for {set i 0} {$i < $n} {incr i 1} {
+>    mol inactive $i
+> }
+>
+> foreach {i} $mols {
+>    mol load psf "$i.psf" dcd "$i.dcd"
+>    set n [molinfo num]
+>    incr n -1
+>    ::RMSDTT::onlyactive
+>    set ::RMSDTT::file_out "$i.dat"
+>    ::RMSDTT::compute_rms {top} {resid 1 to 17} {0}
+>    ::RMSDTT::saveData
+>    mol inactive $n
+> }
+> -----------------------------
+>
+> This is not a pairwise analysis, but will give you a glance on how to do
+> it. The following script will do the job with only one trajectory, and
+> save it in different files (look in the rmsdtt code for the saveData
+> proc to see how to create a matrix).
+>
+> -----------------------------
+> rmsdtt
+> set ::RMSDTT::file_out_sw 1
+> set ::RMSDTT::plot_sw 0
+> ::RMSDTT::onlyactive
+>
+> set n [molinfo top get numframes]
+> for {set f 0} {$f < $n} {incr f 1} {
+>    set ::RMSDTT::file_out "frame$f.dat"
+>    ::RMSDTT::compute_rms {top} {resid 1 to 17} $f
+>    ::RMSDTT::saveData
+> }
+> -----------------------------
+>
+> other variables you might want to change:
+>    ::RMSDTT::time_sw
+>    ::RMSDTT::time_ini
+>    ::RMSDTT::time_step
+>
+> I am going to a conference next week, to CA actually (Biophys soc mtg),
+> but I'll try to add this features into RMSDTT after I came back.
+>
+> Hope this helps,
+
+
+
+
+>------ test.vmd --------
+rmsdtt
+set ::RMSDTT::file_out_sw 1
+set ::RMSDTT::plot_sw 0
+::RMSDTT::doRmsd
+quit
+--------------
+
+
+
+sorry for the looooong delay. It is possible to modify the rmsdtt to do
+a by-residue rmsd calculation. In fact, that is some how present in my
+version of the plugin for doing other stuff. Unfortunatly I cannot share
+it until the paper gets out. I hate this, but I have no choice at the
+moment, sorry!
+
+A few alternatives:
+
+- loop throught the plugin as you said. This would be more or less the
+staff to have in the loop ($i being the residue):
+$::rmsdtt::w.top.left.sel delete 1.0 end
+$::rmsdtt::w.top.left.sel insert end "residue 1"
+::rmsdtt::doRmsd
+puts $::rmsdtt::datatot(avg)
+
+Is not the prettiest thing, but it works. My suggestion is to modify all
+the options you want in the GUI (save, frames,....), and then do that
+loop. Oh, rmsdtt has to be initialized (bring the GUI up). Looking in
+the script you can find other stuff you might want to change/output from
+the script.
+
+- try the itrajcomp plugin (I can give you a copy if you want). It
+supports rmsd by residue using the 'dist' option and gives you a matrix
+as an output.
+
+- The idea you had about putting each residue in a line is worth
+exploring, may be with a special syntax this could be a great
+improvement. But at the moment, that would not work. The whole selection
+is taken. the only thing is that lines with a # are commented.

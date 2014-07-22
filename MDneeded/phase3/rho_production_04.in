@@ -1,0 +1,109 @@
+#############################################################
+## JOB DESCRIPTION                                         ##
+#############################################################
+
+# Minimization and Equilibration Phase3 of
+# 5ht in lipid bilayer
+# NPT constrain the protein backbone and heavy atom of 5HT while free all other atoms
+
+set inputdir ../phase2b
+set restdir ../phase3  
+set outputdir .
+set common ../common
+
+
+#############################################################
+### ADJUSTABLE PARAMETERS                                   ##
+##############################################################
+
+set temperature    310
+set inputname      $inputdir/dat_phase2b3
+set restname       $restdir/dat_phase3_03
+set outputname     dat_phase3_04
+
+structure          $common/ionized.psf
+coordinates        $inputname.coor
+velocities         $inputname.vel 
+bincoordinates     $restname.restart.coor
+binvelocities      $restname.restart.vel
+extendedSystem     $restname.restart.xsc
+firsttimestep      0
+
+#############################################################
+## SIMULATION PARAMETERS                                   ##
+#############################################################
+
+# Input
+paraTypeCharmm        on
+parameters          $common/parameters_all.prm
+
+#temperature         $temperature
+
+# Force-Field Parameters
+exclude             scaled1-4
+1-4scaling          1.0
+cutoff              12.
+switching           on
+switchdist          10.
+pairlistdist        13.5
+margin              1.5
+
+
+# Integrator Parameters
+timestep            2.0  ;# 2fs/step
+rigidBonds          all  ;# needed for 2fs steps
+rigidTolerance      0.00000001
+nonbondedFreq       1
+fullElectFrequency  3
+stepspercycle       12
+
+
+# Constant Temperature Control
+langevin            on    ;# do langevin dynamics
+langevinDamping     5     ;# damping coefficient (gamma)
+langevinTemp        $temperature
+langevinHydrogen    off    ;# don't couple langevin bath to hydrogens
+
+LangevinPiston       on
+LangevinPistonTarget 1.01325
+LangevinPistonPeriod 200
+LangevinPistonDecay  50
+LangevinPistonTemp   $temperature
+
+wrapAll             on
+
+# PME (for full-system periodic electrostatics)
+PME                 yes
+pmeGridSpacing       1.0
+
+# Constant Pressure Control (variable volume)
+useGroupPressure     yes ;# needed for rigidBonds
+useFlexibleCell      yes
+useConstantRatio     yes
+useConstantArea      no
+
+# Output
+outputName          $outputdir/$outputname
+
+restartfreq       10000     ;# 500steps = every 0.5ps
+dcdfreq           10000
+xstFreq           10000
+outputEnergies    30000
+outputPressure    10000
+
+binaryoutput       no
+binaryrestart      yes
+outputTiming       10000
+
+#############################################################
+## EXECUTION SCRIPT                                        ##
+#############################################################
+
+if {0} {
+       # Minimization
+       minimize            5000
+       reinitvels          $temperature
+}
+
+run 10200000
+
