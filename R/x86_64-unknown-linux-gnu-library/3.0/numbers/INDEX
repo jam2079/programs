@@ -1,0 +1,38 @@
+GCD                     GCD and LCM Integer Functions
+Primes                  Prime Numbers
+agm                     Arithmetic-geometric Mean
+catalan                 Catalan Numbers
+chinese                 Chinese Remainder Theorem
+contFrac                Continous Fractions
+coprime                 Coprimality
+div                     Integer Division
+droplet_e               Droplet for e
+egyptian_complete       Egyptian Fractions - Complete Search
+egyptian_methods        Egyptian Fractions - Specialized Methods
+eulersPhi               Eulers's Phi Function
+extGCD                  Extended Euclidean Algorithm
+fibonacci               Fibonacci and Lucas Series
+hermiteNF               Hermite Normal Form
+isIntpower              Powers of Integers
+isNatural               Natural Number
+isPrime                 isPrime Property
+legendre_sym            Legendre and Jacobi Symbol
+mersenne                Mersenne Numbers
+mod                     Modulo Operator
+modinv                  Modular Inverse
+modlin                  Modular Linear Equation Solver
+modpower                Power Function modulo m
+moebius                 Moebius Function
+nextPrime               Next Prime
+numbers-package         Number-theoretic Functions for R
+omega                   Number of Prime Factors
+previousPrime           Previous Prime
+primeFactors            Prime Factors
+primroot                Primitive Root
+pythagorean_triples     Pythagorean Triples
+quadratic_residues      Quadratic Residues
+ratFarey                Farey Approximation
+rem                     Integer Remainder
+sigma                   Divisor Functions
+twinPrimes              Twin Primes
+zeck                    Zeckendorf Representation

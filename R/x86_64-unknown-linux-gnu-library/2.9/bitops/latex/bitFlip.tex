@@ -1,0 +1,40 @@
+\HeaderA{bitFlip}{Binary Flip (Not) Operator}{bitFlip}
+\keyword{arith}{bitFlip}
+\keyword{utilities}{bitFlip}
+\begin{Description}\relax
+The binary flip (not) operator, \code{bitFlip(a, w)}, \dQuote{flips every
+bit} of \code{a} up to the \code{w}-th bit.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+bitFlip(a, bitWidth=32)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{a}] numeric vector.
+\item[\code{bitWidth}] scalar integer between 0 and 32.
+\end{ldescription}
+\end{Arguments}
+\begin{Value}
+binary numeric vector of the same length as \code{a} masked with
+(2\textasciicircum{}\code{bitWidth})-1.  \code{\LinkA{NA}{NA}} is returned for any value of
+\code{a} that is not finite or whose magnitude is greater or equal to
+\eqn{2^{32}}{}.
+\end{Value}
+\begin{Author}\relax
+Steve Dutky
+\end{Author}
+\begin{SeeAlso}\relax
+\code{\LinkA{bitShiftL}{bitShiftL}}, \code{\LinkA{bitXor}{bitXor}}, etc.
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+ stopifnot(
+  bitFlip(-1) == 0,
+  bitFlip(0 ) == 2^32 - 1,
+  bitFlip(0, bitWidth=8) == 255
+ )
+\end{ExampleCode}
+\end{Examples}
+

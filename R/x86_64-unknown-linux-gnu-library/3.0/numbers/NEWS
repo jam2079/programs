@@ -1,0 +1,70 @@
+------------------------------------------------------------------------------
+  numbers                                                               NEWS
+------------------------------------------------------------------------------
+
+Version 0.4.5 (2014-01-03)
+
+  o Imports 'gmp'.
+  o Primes() avoids creating additional memory, doubled its speed.
+
+Version 0.4.3 (2013-11-16)
+
+  o legendre_sym() Legendre and Jacobi symbol.
+  o quadratic_residues() lists all quadratic residues.
+
+Version 0.4.1 (2013-03-30)
+
+  o mersenne() computes Mersenne prime numbers.
+  o Renamed factorize() to primeFactors() (avoid masking ...)
+
+Version 0.3.5 (2013-01-12)
+
+  o catalan() Catalan numbers.
+  o pythagorean_triple() generating Pythagorean triples.
+
+Version 0.3.3 (2012-11-20)
+
+  o hermiteNF() Hermite normal form.
+  o lucas() Lucas numbers as sequence.
+  o Added corrections to mGCD() and mLCM().
+
+Version 0.3.1 (2012-10-04)
+
+  o chinese() Chinese Remainder Theorem.
+  o egypt_methods(), egypt_complete() Egyptian fractions
+  o zeck() Zeckendorf representation
+
+  o Improving modular arithmetics:
+      - mod(), rem(), div().
+
+Version 0.2.1 (2012-09-25)
+
+  o agm() algebraic-geometric mean.
+  o fibonacci() Fibonacci sequence.
+  o droplet_e() for generating digits of e.
+
+  o Modular functions:
+      - modinv(), modlin() modular inverses;
+      - primroot() primitive roots.
+
+  o Greatest common divisor, least common multiple:
+      - extGCD(), GCD(), mGCD(), LCM(), mLCM(), coprime().
+
+Version 0.1.1 (2012-09-24)
+
+  o More Number-theoretic functions:
+      - eulersPhi; moebius(), mertens();
+      - sigma(), tau(), omega(), Omega().
+
+  o Shifted number-theoretic functions from 'pracma' to 'numbers':
+      - contFrac() continuous fractions;
+      - ratFarey() rational approximation through Farey sequence.
+
+  o Prime number functions:
+      - primeSieve(), Primes(), isPrime(), factorize();
+      - twinPrimes(), nextPrime(), previousPrime();
+      - isNatural(), isIntpower().
+
+  o New package 'numbers' on R-Forge.
+
+------------------------------------------------------------------------------

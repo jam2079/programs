@@ -1,27 +1,43 @@
-*.psf
-*.dcd
-*.pdb
+*.psf*
+*.dcd*
+*.pdb*
 dat_*
+*.inp
+
+*.ini
+*.rsr
+*.sch
+*.ndx*
+*.D00000001
+*.V99990001
+*.ali
+*.seq
+core.*
+
+atom.vector
+fit.index
+atom.names
 
 *.Rdata
 *.RData
 .Rhistory
 *.Rproj*
 *.Rout
-R/
 
 *.txt
 *.dat
 *.pdf
 *.log
+*.tif
+*.swp
 
 *.gif
 *.png
 *.jpg
 
 q*
+*~
 
 .hidden_bashrc_output
 .DS_Store
-._.DS_Store
-
+._*
