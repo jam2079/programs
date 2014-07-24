@@ -5,7 +5,7 @@ proc dimension {atomselection} {
 	set minmax [measure minmax $atomselection]
 	set min [lindex $minmax 0]
 	set max [lindex $minmax 1]
-	set outfile [open "../phase1/COORDS" w]
+	set outfile [open "COORDS" w]
 	puts $outfile "cellBasisVector1   [expr [lindex $max 0] - [lindex $min 0]] 0 0"
 	puts $outfile "cellBasisVector2   0 [expr [lindex $max 1] - [lindex $min 1]] 0"
 	puts $outfile "cellBasisVector3   0 0 [expr [lindex $max 2] - [lindex $min 2]]"

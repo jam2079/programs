@@ -1,0 +1,39 @@
+
+
+# PME (for full-system periodic electrostatics)
+PME                 yes
+PMEGridSpacing      1.0 
+
+# Constant Pressure Control (variable volume)
+useGroupPressure      yes ;# needed for rigidBonds
+useFlexibleCell       no
+useConstantArea       no
+
+# Output
+outputName          $outputdir/$outputname
+
+restartfreq        5000     ;# 1000steps = every 1ps
+dcdfreq            5000
+xstFreq            5000
+outputEnergies     5000
+outputPressure     5000
+
+binaryoutput       no   
+binaryrestart      yes
+outputTiming       5000
+
+
+#############################################################
+## EXTRA PARAMETERS                                        ##
+#############################################################
+
+
+#############################################################
+## EXECUTION SCRIPT                                        ##
+#############################################################
+
+# Minimization
+minimize            5000
+reinitvels          $temperature
+
+run 500000 ;# 250ps

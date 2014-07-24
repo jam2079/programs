@@ -1,0 +1,65 @@
+############################################################
+## JOB DESCRIPTION                                         ##
+#############################################################
+
+# Minimization and Equilibration Phase1 of 
+# DAT in lipid bilayer
+# NVT freeze all atoms except for the lipids tails
+
+set inputdir ../phase1
+set outputdir .
+set common ../common
+
+#############################################################
+## ADJUSTABLE PARAMETERS                                   ##
+#############################################################
+
+structure          $common/ionized.psf          
+coordinates        $common/ionized.pdb          
+
+set temperature    310
+set outputname     dat_phase1
+
+firsttimestep      0
+
+#############################################################
+## SIMULATION PARAMETERS                                   ##
+#############################################################
+
+# Input
+paraTypeCharmm	    on
+parameters          $common/parameters_all.prm
+temperature         $temperature
+
+# Fixed Atoms Constraint (set PDB beta-column to 1)
+fixedAtoms          on
+fixedAtomsFile      $outputdir/rho_phase1_fix.pdb
+fixedAtomsCol       B
+
+# Force-Field Parameters
+exclude             scaled1-4
+1-4scaling          1.0
+cutoff              12.
+switching           on
+switchdist          10.
+pairlistdist        13.5
+margin              1.5
+
+# Integrator Parameters
+timestep            1.0  ;# 1fs/step
+rigidBonds          all  ;# needed for 2fs steps
+rigidTolerance      0.00000001
+nonbondedFreq       2
+fullElectFrequency  4  
+stepspercycle       20
+
+
+# Constant Temperature Control
+langevin            on    ;# do langevin dynamics
+langevinDamping     5     ;# damping coefficient (gamma) of 5/ps
+langevinTemp        $temperature
+langevinHydrogen    off    ;# don't couple langevin bath to hydrogens
+
+
+# Periodic Boundary Conditions
+
