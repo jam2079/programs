@@ -1,1 +1,1 @@
-git push -u $1 master `pwd | rev | cut -d"/" -f1 | rev`
+git push -u `pwd | rev | cut -d"/" -f1 | rev` master
