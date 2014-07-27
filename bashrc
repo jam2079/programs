@@ -26,7 +26,10 @@ alias removelinks='find -L . -type l -delete &'
 alias removedotdash="find . -iname '._' -exec rm '{}' ';'"
 alias dusort='du -hs * | sort -h'
 alias countfiles='find . -type f | wc -l'
+
 alias bringandcat='sh /home/jam2079/programs/bringandcat.sh'
+alias sendtocarver='sh /home/jam2079/programs/sendtocarver.sh'
+
 function gedit() { command gedit "$@" & }
 
 alias compresstar='tar -zcvf'
@@ -92,7 +95,7 @@ alias gadd="git add ."
 alias gcomm="git commit -m "
 alias gpush="sh /home/jam2079/programs/gpush.sh"
 alias gstat="git status"
-alias gpull="git pull"
+alias gpull="git pull" 
 alias glog="git log"
 alias gcheckout="git checkout -- "
 alias gsize="sh /home/jam2079/programs/gsize.sh"

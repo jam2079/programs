@@ -1,5 +1,4 @@
-foo=`pwd`
-mol=${foo##*/}
+mol=`pwd | rev | cut -d"/" -f1 | rev`
 echo $mol
 rsync -razvu jmedina@carver.nersc.gov:~/Pathrover/$mol/* .
 if [ ! -f phase3/dat_phase3_01.dcd ]
