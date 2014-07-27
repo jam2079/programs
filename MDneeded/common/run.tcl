@@ -1,5 +1,3 @@
-#cd /Volumes/aristotle/2x79/common/
-
 mol load psf ionized.psf pdb ionized.pdb
 
 source equil_phase1_fix.tcl
@@ -13,3 +11,4 @@ source equil_phase2b_restrain.tcl
 
 source getsize.tcl
 exit
+

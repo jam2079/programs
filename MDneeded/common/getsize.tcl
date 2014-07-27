@@ -22,5 +22,17 @@ proc dimension {atomselection} {
 
 set everyone [atomselect top all]
 dimension $everyone
+
+set out [open ../phase1/rho_equil.in w]
+fconfigure $out -translation binary
+set l [list rho_equil.in.tmp1 COORDS rho_equil.in.tmp2]
+foreach fname $l {
+    set in [open $fname]
+    fconfigure $in -translation binary
+    fcopy $in $out
+    close $in
+}
+close $out
 	
+file delete -force *tmp* COORDS
 
