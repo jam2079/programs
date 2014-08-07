@@ -18,8 +18,8 @@ set common ../common
 
 set temperature    310
 set inputname      $inputdir/dat_phase2b3
-set restname      $restdir/dat_phase3_09
-set outputname     dat_phase3_10
+set restname      $restdir/dat_phase3_12
+set outputname     dat_phase3_13
 
 structure          $common/ionized.psf
 coordinates        $inputname.coor

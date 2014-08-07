@@ -34,5 +34,5 @@ foreach fname $l {
 }
 close $out
 	
-file delete -force *tmp* COORDS
+#file delete -force *tmp* COORDS
 

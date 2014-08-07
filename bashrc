@@ -62,16 +62,16 @@ function my_ip() # Get IP adress on ethernet.
     echo ${MY_IP:-"Not connected"}
 }
 
-slchoose gromacs 3.3.1 >& /home/jam2079/.hidden_bashrc_output
-slchoose R 2.15.2 gcc_64 >& /home/jam2079/.hidden_bashrc_output
+#slchoose gromacs 3.3.1 >& /home/jam2079/.hidden_bashrc_output
+#slchoose R 2.15.2 gcc_64 >& /home/jam2079/.hidden_bashrc_output
 #find -L . -type l -delete >& /home/jam2079/.hidden_bashrc_output &
-find . -iname "*/home/jam2079" -exec rm '{}' ';' >& /home/jam2079/.hidden_bashrc_output
+#find . -iname "*/home/jam2079" -exec rm '{}' ';' >& /home/jam2079/.hidden_bashrc_output
 #export LIBGL_ALWAYS_INDIRECT=yes
 
 #Openstructure
-installdir=/home/nij2003/openstructure
-export PATH=$installdir/bin${PATH+:$PATH}
-export LD_LIBRARY_PATH=$installdir/lib64:$installdir/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}
+#installdir=/home/nij2003/openstructure
+#export PATH=$installdir/bin${PATH+:$PATH}
+#export LD_LIBRARY_PATH=$installdir/lib64:$installdir/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}
 alias ost_develop=$installdir/develop/stage/bin/ost
 alias dng_develop=$installdir/develop/stage/bin/dng
 alias ost_stable=$installdir/release-1.3.3/stage/bin/ost
@@ -83,9 +83,9 @@ alias Rscript="/home/jam2079/programs/Rscript"
 alias R="/home/jam2079/programs/RR"
 alias vmdrun="vmd -dispdev text -e"
 #alias MATCH="/home/jam2079/programs/MATCH_RELEASE/MATCH/scripts/MATCH.pl"
-export PATH=/home/jam2079/programs/MATCH_RELEASE/MATCH/scripts/:$PATH
-export PerlChemistry=/home/jam2079/programs/MATCH_RELEASE/PerlChemistry
-export MATCH=/home/jam2079/programs/MATCH_RELEASE/MATCH
+#export PATH=/home/jam2079/programs/MATCH_RELEASE/MATCH/scripts/:$PATH
+#export PerlChemistry=/home/jam2079/programs/MATCH_RELEASE/PerlChemistry
+#export MATCH=/home/jam2079/programs/MATCH_RELEASE/MATCH
 alias xvfb="/home/jam2079/programs/xvfb_wrapper.sh"
 alias getpdb="sh /home/jam2079/programs/getpdb.sh"
 alias prepareMD="sh /home/jam2079/programs/prepareMD.sh"
